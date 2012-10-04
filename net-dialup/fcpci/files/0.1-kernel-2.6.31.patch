@@ -1,0 +1,12 @@
+diff -urp fritz/src.org/driver.c fritz/src/driver.c
+--- fritz/src.org/driver.c	2009-10-20 22:21:30.000000000 +0200
++++ fritz/src/driver.c	2009-10-20 22:22:48.000000000 +0200
+@@ -569,7 +569,7 @@ static void __kcapi reset_ctrl (struct c
+ 		}
+ 	}
+ 	stop (card);
+-	capi_ctr_reseted (ctrl);
++	capi_ctr_down (ctrl);
+ #if defined (__fcpnp__)
+ 	pnp_disable_dev (card->dev);
+ #endif
