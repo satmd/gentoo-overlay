@@ -1,0 +1,22 @@
+--- trunk/src/mapnik.cpp	2009/09/14 09:15:10	2500
++++ trunk/src/mapnik.cpp	2010/07/28 13:39:38	2586
+@@ -209,11 +209,19 @@
+         try {
+ 
+             if ( boost::filesystem::is_regular( dir_itr->status() ) ) {
++#if BOOST_VERSION < 103600
+                 if (mydebug > 10) cout << "freetype_engine::register_font(" << dir_itr->leaf() << ")" << endl;
++#else
++                if (mydebug > 10) cout << "freetype_engine::register_font(" << dir_itr->filename() << ")" << endl;
++#endif
+                 freetype_engine::register_font( dir_itr->string() );
+             }
+         } catch ( const std::exception & ex ) {
++#if BOOST_VERSION < 103600
+             std::cout << dir_itr->leaf() << " " << ex.what() << std::endl;
++#else
++            std::cout << dir_itr->filename() << " " << ex.what() << std::endl;
++#endif
+         }
+ 
+     }

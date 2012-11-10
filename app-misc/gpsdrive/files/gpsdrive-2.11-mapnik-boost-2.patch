@@ -1,0 +1,29 @@
+--- src/mapnik.cpp.orig	2012-11-07 22:33:17.660934196 +0100
++++ src/mapnik.cpp	2012-11-07 22:33:57.913465836 +0100
+@@ -219,16 +219,24 @@
+             if ( boost::filesystem::is_regular( dir_itr->status() ) ) {
+ #if BOOST_VERSION < 103600
+                 if (mydebug > 10) cout << "freetype_engine::register_font(" << dir_itr->leaf() << ")" << endl;
+-#else
++#elif BOOST_VERSION < 104600
+                 if (mydebug > 10) cout << "freetype_engine::register_font(" << dir_itr->filename() << ")" << endl;
++#else
++		if (mydebug > 10) cout << "freetype_engine::register_font(" << dir_itr->path().filename() << ")" << endl;
+ #endif
++#if BOOST_VERSION < 104600
+                 freetype_engine::register_font( dir_itr->string() );
++#else
++		freetype_engine::register_font( dir_itr->path().string() );
++#endif
+             }
+         } catch ( const std::exception & ex ) {
+ #if BOOST_VERSION < 103600
+             std::cout << dir_itr->leaf() << " " << ex.what() << std::endl;
+-#else
++#elif BOOST_VERSION < 104600
+             std::cout << dir_itr->filename() << " " << ex.what() << std::endl;
++#else
++	    std::cout << dir_itr->path().filename() << " " << ex.what() << std::endl;
+ #endif
+         }
+ 
