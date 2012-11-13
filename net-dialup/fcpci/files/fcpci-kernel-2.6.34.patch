@@ -1,5 +1,5 @@
---- driver.c~	2010-05-17 11:51:30.315940940 +0200
-+++ driver.c	2010-05-17 11:51:30.362264370 +0200
+--- fritz/src/driver.c.orig	2010-12-09 16:47:24.552314553 +0100
++++ fritz/src/driver.c	2010-12-09 16:53:16.040981703 +0100
 @@ -48,6 +48,8 @@
  #include "defs.h"
  #include "lib.h"
@@ -9,7 +9,24 @@
  
  /*---------------------------------------------------------------------------*\
  \*---------------------------------------------------------------------------*/
-@@ -490,39 +492,34 @@
+@@ -220,16 +220,6 @@
+ } /* kill_version */
+ 
+ /*---------------------------------------------------------------------------*\
+-\*---------------------------------------------------------------------------*/
+-static void pprintf (char * page, int * len, const char * fmt, ...) {
+-	va_list args;
+-
+-	va_start (args, fmt);
+-	*len += vsprintf (page + *len, fmt, args);
+-	va_end (args);
+-} /* pprintf */
+-
+-/*---------------------------------------------------------------------------*\
+ \*-C-------------------------------------------------------------------------*/
+ static inline int in_critical (void) {
+ 	
+@@ -490,39 +480,33 @@
  
  /*---------------------------------------------------------------------------*\
  \*---------------------------------------------------------------------------*/
@@ -20,9 +37,9 @@
 -	int			count, 
 -	int *			eof,
 -	struct capi_ctr *	ctrl
-+
-+static int __kcapi ctr_info (struct seq_file *m, void *v
- ) {
+-) {
++static int __kcapi ctr_info (struct seq_file *m, void *v)
++{
 +        struct capi_ctr *ctrl = m->private;
  	card_t *		card;
  	char *			temp;
@@ -61,7 +78,7 @@
  			(flag & 0x01) ? " DSS1" : "",
  			(flag & 0x02) ? " CT1" : "",
  			(flag & 0x04) ? " VN3" : "",
-@@ -534,21 +531,30 @@
+@@ -534,21 +518,29 @@
  	}
  	flag = ((unsigned char *) (ctrl->profile.manu))[5];
  	if (flag) {
@@ -79,46 +96,26 @@
 -	*eof = 1;
 -	*start = page - ofs;
 -	return ((count < len - ofs) ? count : len - ofs);
-+
-+       return 0;
++	return 0;
  } /* ctr_info */
  
 +static int ctr_proc_open(struct inode *inode, struct file *file)
 +{
-+       return single_open(file, ctr_info, PDE(inode)->data);
++	return single_open(file, ctr_info, PDE(inode)->data);
 +}
 +
 +const struct file_operations ctr_proc_fops = {
-+       .owner          = THIS_MODULE,
-+       .open           = ctr_proc_open,
-+       .read           = seq_read,
-+       .llseek         = seq_lseek,
-+       .release        = single_release,
++	.owner		= THIS_MODULE,
++	.open		= ctr_proc_open,
++	.read		= seq_read,
++	.llseek		= seq_lseek,
++	.release	= single_release,
 +};
 +
  /*---------------------------------------------------------------------------*\
  \*---------------------------------------------------------------------------*/
  static void __kcapi reset_ctrl (struct capi_ctr * ctrl) {
---- driver.c~	2010-05-17 19:55:09.158499792 +0200
-+++ driver.c	2010-05-17 19:55:09.190784099 +0200
-@@ -222,16 +222,6 @@
- } /* kill_version */
- 
- /*---------------------------------------------------------------------------*\
--\*---------------------------------------------------------------------------*/
--static void pprintf (char * page, int * len, const char * fmt, ...) {
--	va_list args;
--
--	va_start (args, fmt);
--	*len += vsprintf (page + *len, fmt, args);
--	va_end (args);
--} /* pprintf */
--
--/*---------------------------------------------------------------------------*\
- \*-C-------------------------------------------------------------------------*/
- static inline int in_critical (void) {
- 	
-@@ -632,7 +622,7 @@
+@@ -626,7 +618,7 @@
  	ctrl->release_appl =	release_appl;
  	ctrl->send_message =	send_msg;
  	ctrl->procinfo =	proc_info;

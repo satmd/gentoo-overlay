@@ -1,6 +1,29 @@
 # ChangeLog for net-dialup/fcpci
-# Copyright 2002-2008 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo-x86/net-dialup/fcpci/ChangeLog,v 1.19 2008/01/30 01:36:37 sbriesen Exp $
+# Copyright 2002-2011 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+*fcpci-0.1-r7 (26 Jan 2012)
+  26 Jan 2012; Dennis Freise <dennis.freise@final-frontier.org>
+  Revision bump, added patch for kernel >= 3.2 (thx to Arnd Feldmueller)
+
+  04 Sep 2011; Dennis Freise <dennis.freise@final-frontier.org>
+  added patch for 64bit environments (credit goes to Arnd Feldmueller),
+  changed ebuild to choose the correct patch depending on platform.
+
+*fcpci-0.1-r6 (28 Aug 2011)
+  28 Aug 2011; Dennis Freise <dennis.freise@final-frontier.org>
+  +fcpci-0.1-r6.ebuild:
+  Revision bump, fixed patches, fixed ebuild to detect correct kernel version
+
+  27 Aug 2011; Dennis Freise <dennis.freise@final-frontier.org>
+  -fcpci-0.1.ebuild, -fcpci-0.1-r1.ebuild, -fcpci-0.1-r2.ebuild,
+  -fcpci-0.1-r3.ebuild, -fcpci-0.1-r4.ebuild:
+  removed old ebuilds.
+
+*fcpci-0.1-r5 (26 Aug 2011)
+  26 Aug 2011; Dennis Freise <dennis.freise@final-frontier.org>
+  +fcpci-0.1-r5.ebuild:
+  fix compile problems on recent 2.6.3x kernels, adding 3.0* as a valid target
 
 *fcpci-0.1-r1 (30 Jan 2008)
 

@@ -1,16 +1,17 @@
-# Copyright 1999-2008 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-dialup/fcpci/fcpci-0.1-r1.ebuild,v 1.1 2008/01/30 01:36:37 sbriesen Exp $
+# $Header: $
 
 inherit eutils rpm linux-mod
 
-DESCRIPTION="AVM kernel 2.6 modules for Fritz!Card PCI"
+DESCRIPTION="AVM kernel 2.6/3.0 modules for Fritz!Card PCI"
 HOMEPAGE="http://opensuse.foehr-it.de/"
-SRC_URI="http://opensuse.foehr-it.de/rpms/10_3/src/${P}-0.src.rpm"
+SRC_URI="http://opensuse.foehr-it.de/rpms/11_2/src/${P}-0.src.rpm"
+RESTRICT="nomirror"
 
 LICENSE="AVM-FC"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="-amd64 ~x86"
 IUSE=""
 
 DEPEND="!net-dialup/fritzcapi"
@@ -22,7 +23,9 @@ pkg_setup() {
 	linux-mod_pkg_setup
 
 	if ! kernel_is 2 6; then
-		die "This package works only with 2.6 kernel!"
+		if ! kernel_is 3 0; then
+			die "This package works only with 2.6 or 3.0 kernel!"
+		fi
 	fi
 
 	BUILD_TARGETS="all"
@@ -31,12 +34,12 @@ pkg_setup() {
 }
 
 src_unpack() {
-	local BIT="" PAT="01234"
+	local BIT="" PAT="01234567"
 	if use amd64; then
 		BIT="64bit-" PAT="1234"
 	fi
 
-	rpm_unpack "${DISTDIR}/${A}" || die "failed to unpack ${A} file"
+	rpm_unpack "${A}" || die "failed to unpack ${A} file"
 	DISTDIR="${WORKDIR}" unpack ${PN}-suse[0-9][0-9]-${BIT}[0-9].[0-9]*-[0-9]*.tar.gz
 
 	cd "${S}"
@@ -48,6 +51,12 @@ src_unpack() {
 		objcopy -L memcmp -L memcpy -L memmove -L memset -L strcat \
 			-L strcmp -L strcpy -L strlen -L strncmp -L strncpy "${i}"
 	done
+
+	sed -i "s#/var/lib/fritz#${WORKDIR}/fritz/lib#" src/Makefile
+
+	cd "${S}/src"
+	epatch ${FILESDIR}/kernel-2.6.34.patch
+	epatch ${FILESDIR}/kernel-2.6.39.patch
 }
 
 src_install() {
