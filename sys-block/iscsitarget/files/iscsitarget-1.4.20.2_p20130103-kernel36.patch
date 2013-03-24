@@ -1,0 +1,21 @@
+diff -uNr iscsitarget-1.4.20.2_p20130103.orig/kernel/event.c iscsitarget-1.4.20.2_p20130103/kernel/event.c
+--- iscsitarget-1.4.20.2_p20130103.orig/kernel/event.c	2013-01-03 10:10:53.000000000 +0100
++++ iscsitarget-1.4.20.2_p20130103/kernel/event.c	2013-03-24 23:16:27.718661917 +0100
+@@ -26,7 +26,7 @@
+ 		rlen = NLMSG_ALIGN(nlh->nlmsg_len);
+ 		if (rlen > skb->len)
+ 			rlen = skb->len;
+-		ietd_pid = NETLINK_CB(skb).pid;
++		ietd_pid = NETLINK_CB(skb).portid;
+ 		WARN_ON(ietd_pid == 0);
+ 		if (nlh->nlmsg_flags & NLM_F_ACK)
+ 			netlink_ack(skb, nlh, 0);
+@@ -75,7 +75,7 @@
+ 		.bind = NULL,
+ 	};
+ 
+-	nl = netlink_kernel_create(&init_net,
++	nl = __netlink_kernel_create(&init_net,
+ 				   NETLINK_IET,
+ 				   THIS_MODULE,
+ 				   &cfg);
