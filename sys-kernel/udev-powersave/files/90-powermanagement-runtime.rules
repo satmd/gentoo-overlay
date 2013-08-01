@@ -1,0 +1,9 @@
+ACTION=="add", SUBSYSTEM=="pci|pci_express", TEST=="power/control", ATTR{power/control}="auto"
+
+# usb stuff
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="08ff", ATTR{idProduct}=="2810", TEST=="power/control", ATTR{power/control}="auto"
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="0a5c", ATTR{idProduct}=="2145", TEST=="power/control", ATTR{power/control}="auto"
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="17ef", ATTR{idProduct}=="1003", TEST=="power/control", ATTR{power/control}="auto"
+
+# ericsson wan
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="0bdb", ATTR{idProduct}=="1900", TEST=="power/control", ATTR{power/control}="on"

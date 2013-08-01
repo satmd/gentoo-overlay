@@ -1,0 +1,22 @@
+#!/bin/bash
+cd /usr/src
+umask 0022
+[ config -nt linux/.config ] || cp linux/.config config
+KERNEL_CURR="$(basename "$(realpath linux)")"
+eselect kernel set 0
+KERNEL_NEW="$(basename "$(realpath linux)")"
+if [ "$KERNEL_CURR" != "$KERNEL_NEW" ] ; then
+	echo "Old kernel: "
+	echo -en "\t"
+	echo "$KERNEL_CURR"
+	echo "New kernel: "
+	echo -en "\t"
+	echo "$KERNEL_NEW"
+	cd linux
+	chmod a+r -R .
+	find -perm /0100 -exec chmod a+x {} +
+	test -e .config || cp ../config .config
+	make oldconfig 
+	make -j3 all
+	make all modules modules modules_install install
+fi

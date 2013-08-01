@@ -1,0 +1,7 @@
+#!/bin/bash
+for DEVICE in $DEVLINKS $DEVNAME ; do
+	( while read DEV PARAMS; do
+		[ "$DEV" != "$DEVICE" ] && continue
+		hdparm $PARAMS $DEV
+	done ) < /etc/hdparm.conf
+done
