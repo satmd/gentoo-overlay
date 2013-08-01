@@ -10,7 +10,7 @@ SRC_URI=""
 
 LICENSE="as-is"
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 DEPEND="sys-boot/grub:2 sys-kernel/dracut virtual/linux-sources"
