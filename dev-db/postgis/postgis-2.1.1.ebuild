@@ -26,7 +26,7 @@ RDEPEND="
 			dev-db/postgresql-server:9.1
 			dev-db/postgresql-server:9.0
 		)
-		dev-libs/json-c
+		<=dev-libs/json-c-0.9
 		dev-libs/libxml2:2
 		>=sci-libs/geos-3.3.8
 		>=sci-libs/proj-4.6.0
@@ -97,6 +97,7 @@ pkg_setup() {
 src_prepare() {
 	epatch "${FILESDIR}/${PN}-2.1-ldflags.patch" \
 		"${FILESDIR}/${PN}-2.0-arflags.patch" \
+		"${FILESDIR}/${PN}-2.1-pkgconfig-json.patch"
 
 	local AT_M4DIR="macros"
 	eautoreconf
