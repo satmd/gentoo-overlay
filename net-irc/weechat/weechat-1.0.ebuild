@@ -23,7 +23,7 @@ fi
 
 NETWORKS="+irc"
 PLUGINS="+alias +charset +fifo +logger +relay +rmodifier +scripts +spell +xfer"
-INTERFACES="+ncurses gtk"
+#INTERFACES="+ncurses gtk"
 SCRIPT_LANGS="guile lua +perl +python ruby tcl"
 IUSE="${SCRIPT_LANGS} ${PLUGINS} ${INTERFACES} ${NETWORKS} doc nls +ssl"
 
@@ -42,9 +42,9 @@ RDEPEND="
 	ssl? ( net-libs/gnutls )
 	spell? ( app-text/aspell )
 	tcl? ( >=dev-lang/tcl-8.4.15 )
-	ncurses? ( sys-libs/ncurses )
-	gtk? ( x11-libs/gtk+:2 )
 "
+#	ncurses? ( sys-libs/ncurses )
+#	gtk? ( x11-libs/gtk+:2 )
 DEPEND="${RDEPEND}
 	doc? (
 		app-text/asciidoc
@@ -54,7 +54,7 @@ DEPEND="${RDEPEND}
 "
 
 
-REQUIRED_USE=" || ( ncurses gtk )"
+#REQUIRED_USE=" || ( ncurses gtk )"
 
 LANGS=( cs de es fr hu it ja pl pt_BR ru )
 for X in "${LANGS[@]}" ; do
@@ -95,7 +95,10 @@ src_prepare() {
 }
 
 src_configure() {
+	# $(cmake-utils_use_enable gtk)
+	# $(cmake-utils_use_enable ncurses)
 	local mycmakeargs=(
+		"-DENABLE_NCURSES=ON"
 		"-DENABLE_LARGEFILE=ON"
 		"-DENABLE_DEMO=OFF"
 		"-DENABLE_GTK=OFF"
@@ -120,8 +123,6 @@ src_configure() {
 		$(cmake-utils_use_enable ssl GNUTLS)
 		$(cmake-utils_use_enable tcl)
 		$(cmake-utils_use_enable xfer)
-		$(cmake-utils_use_enable gtk)
-		$(cmake-utils_use_enable ncurses)
 	)
 
 	cmake-utils_src_configure
