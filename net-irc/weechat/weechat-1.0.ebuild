@@ -3,7 +3,7 @@
 # $Header: /var/cvsroot/gentoo-x86/net-irc/weechat/weechat-0.4.3-r1.ebuild,v 1.6 2014/08/13 09:23:10 ago Exp $
 
 EAPI=5
-PYTHON_COMPAT=( python{2_7,3_2,3_3} )
+PYTHON_COMPAT=( python{2_7,3_2,3_3,3_4} )
 
 EGIT_REPO_URI="git://git.sv.gnu.org/weechat.git"
 [[ ${PV} == "9999" ]] && GIT_ECLASS="git-r3"
@@ -25,9 +25,10 @@ NETWORKS="+irc"
 PLUGINS="+alias +charset +fifo +logger +relay +rmodifier +scripts +spell +xfer"
 #INTERFACES="+ncurses gtk"
 SCRIPT_LANGS="guile lua +perl +python ruby tcl"
+# test is not ready yet
 IUSE="${SCRIPT_LANGS} ${PLUGINS} ${INTERFACES} ${NETWORKS} doc nls +ssl"
 
-use doc && DOCS="AUTHORS ChangeLog NEWS README"
+DOCS="AUTHORS.asciidoc ChangeLog.asciidoc README.asciidoc"
 
 RDEPEND="
 	dev-libs/libgcrypt:0
@@ -45,6 +46,7 @@ RDEPEND="
 	spell? ( app-text/aspell )
 	tcl? ( >=dev-lang/tcl-8.4.15 )
 "
+#	test? ( dev-util/cpputest)
 #	ncurses? ( sys-libs/ncurses )
 #	gtk? ( x11-libs/gtk+:2 )
 DEPEND="${RDEPEND}
@@ -99,6 +101,7 @@ src_prepare() {
 src_configure() {
 	# $(cmake-utils_use_enable gtk)
 	# $(cmake-utils_use_enable ncurses)
+	# $(cmake-utils_use_enable tests test)
 	local mycmakeargs=(
 		"-DENABLE_NCURSES=ON"
 		"-DENABLE_LARGEFILE=ON"
