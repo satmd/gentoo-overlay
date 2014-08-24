@@ -27,6 +27,8 @@ PLUGINS="+alias +charset +fifo +logger +relay +rmodifier +scripts +spell +xfer"
 SCRIPT_LANGS="guile lua +perl +python ruby tcl"
 IUSE="${SCRIPT_LANGS} ${PLUGINS} ${INTERFACES} ${NETWORKS} doc nls +ssl"
 
+use doc && DOCS="AUTHORS ChangeLog NEWS README"
+
 RDEPEND="
 	dev-libs/libgcrypt:0
 	net-misc/curl[ssl]
