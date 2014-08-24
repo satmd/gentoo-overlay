@@ -69,8 +69,6 @@ pkg_setup() {
 src_prepare() {
 	local i
 
-	epatch "${FILESDIR}"/"${PN}"-0.4.3-always-link-against-pthreads.patch
-
 	# fix libdir placement
 	sed -i \
 		-e "s:lib/:$(get_libdir)/:g" \
