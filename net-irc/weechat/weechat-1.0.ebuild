@@ -53,7 +53,6 @@ DEPEND="${RDEPEND}
 	nls? ( >=sys-devel/gettext-0.15 )
 "
 
-DOCS="AUTHORS ChangeLog NEWS README"
 
 #REQUIRED_USE=" || ( ncurses gtk )"
 
