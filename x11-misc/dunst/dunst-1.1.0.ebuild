@@ -34,8 +34,6 @@ DEPEND="${CDEPEND}
 RDEPEND="${CDEPEND}"
 
 src_prepare() {
-	# fixes backported from git
-	epatch "${FILESDIR}"/${P}-fix_pause_resume.patch
 
 	# Remove nasty CFLAGS which override user choice
 	sed -ie "/^CFLAGS/ {
