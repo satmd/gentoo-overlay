@@ -41,9 +41,8 @@ src_prepare() {
 		s:-O.::
 	}" config.mk || die "sed failed"
 
-	if ! use dunstify; then
-		# don't build dunstify: it pulls in deps but is not being installed
-		sed -ie "/^all:/ s:dunstify::" Makefile || die "sed failed"
+	if use dunstify; then
+		sed -ie "/^all:/ s:\s*$: dunstify:" Makefile || die "sed failed"
 	fi
 
 	epatch_user
