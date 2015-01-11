@@ -22,8 +22,8 @@ src_unpack() {
 }
 
 src_install() {
-	insinto /lib/udev
-	doins "${FILESDIR}"/udev-hdparm
+	exeinto /lib/udev
+	doexe "${FILESDIR}"/udev-hdparm
 
 	insinto /lib/udev/rules.d
 	doins "${FILESDIR}"/90-hdparm.rules
