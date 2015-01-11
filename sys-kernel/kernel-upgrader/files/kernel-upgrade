@@ -1,6 +1,7 @@
 #!/bin/bash
 cd /usr/src
 umask 0022
+NUM_CPUS="$(grep -c ^processor /proc/cpuinfo)"
 [ config -nt linux/.config ] || cp linux/.config config
 KERNEL_CURR="$(basename "$(realpath linux)")"
 eselect kernel set 0
@@ -16,7 +17,7 @@ if [ "$KERNEL_CURR" != "$KERNEL_NEW" ] ; then
 	chmod a+r -R .
 	find -perm /0100 -exec chmod a+x {} +
 	test -e .config || cp ../config .config
-	make oldconfig 
-	make -j3 all
+	make olddefconfig
+	make -j${NUM_CPUS} all
 	make all modules modules modules_install install
 fi
