@@ -6,7 +6,7 @@ EAPI=5
 
 inherit autotools eutils udev vcs-snapshot
 
-MY_PV="v_${PV//./_}"
+MY_PV="V_${PV//./_}"
 DESCRIPTION="library to add support for consumer fingerprint readers"
 HOMEPAGE="http://cgit.freedesktop.org/libfprint/libfprint/"
 SRC_URI="http://cgit.freedesktop.org/${PN}/${PN}/snapshot/${MY_PV}.tar.bz2 -> ${P}.tar.bz2
