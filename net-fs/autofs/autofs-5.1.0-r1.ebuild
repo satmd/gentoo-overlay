@@ -85,6 +85,7 @@ src_prepare() {
 "
 	for PATCH in $PATCHES ; do
 		epatch "${PATCH}"
+	done
 	sed -i -e "s:/usr/bin/kill:/bin/kill:" samples/autofs.service.in || die #bug #479492
 	autotools-utils_src_prepare
 }
