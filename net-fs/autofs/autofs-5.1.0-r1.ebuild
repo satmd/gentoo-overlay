@@ -44,48 +44,41 @@ CONFIG_CHECK="~AUTOFS4_FS"
 
 PATCHES=(
 	"${FILESDIR}/${P}-fix-missing-stdarg.patch"
+	"${FILESDIR}/autofs-5.1.0-fix-compile-error-in-defaults_c.patch"
+	"${FILESDIR}/autofs-5.1.0-add-serialization-to-sasl-init.patch"
+	"${FILESDIR}/autofs-5.1.0-dont-allocate-dev_ctl_ops-too-early.patch"
+	"${FILESDIR}/autofs-5.1.0-fix-incorrect-round-robin-host-detection.patch"
+	"${FILESDIR}/autofs-5.0.9-fix-race-accessing-qdn-in-get_query_dn.patch"
+	"${FILESDIR}/autofs-5.1.0-fix-leak-in-cache_push_mapent.patch"
+	"${FILESDIR}/autofs-5.1.0-fix-config-entry-read-buffer-not-checked.patch"
+	"${FILESDIR}/autofs-5.1.0-fix-FILE-pointer-check-in-defaults_read_config.patch"
+	"${FILESDIR}/autofs-5.1.0-fix-memory-leak-in-conf_amd_get_log_options.patch"
+	"${FILESDIR}/autofs-5.1.0-fix-signed-comparison-in-inet_fill_net.patch"
+	"${FILESDIR}/autofs-5.1.0-fix-buffer-size-checks-in-get_network_proximity.patch"
+	"${FILESDIR}/autofs-5.1.0-fix-leak-in-get_network_proximity.patch"
+	"${FILESDIR}/autofs-5.1.0-fix-buffer-size-checks-in-merge_options.patch"
+	"${FILESDIR}/autofs-5.1.0-check-amd-lex-buffer-len-before-copy.patch"
+	"${FILESDIR}/autofs-5.1.0-add-return-check-in-ldap-check_map_indirect.patch"
+	"${FILESDIR}/autofs-5.1.0-check-host-macro-is-set-before-use.patch"
+	"${FILESDIR}/autofs-5.1.0-check-options-length-before-use-in-parse_amd_c.patch"
+	"${FILESDIR}/autofs-5.1.0-fix-some-out-of-order-evaluations-in-parse_amd_c.patch"
+	"${FILESDIR}/autofs-5.1.0-fix-copy-and-paste-error-in-dup_defaults_entry.patch"
+	"${FILESDIR}/autofs-5.1.0-fix-leak-in-parse_mount.patch"
+	"${FILESDIR}/autofs-5.1.0-add-mutex-call-return-check-in-defaults_c.patch"
+	"${FILESDIR}/autofs-5.1.0-force-disable-browse-mode-for-amd-format-maps.patch"
+	"${FILESDIR}/autofs-5.1.0-fix-hosts-map-options-check-in-lookup_amd_instance.patch"
+	"${FILESDIR}/autofs-5.1.0-fix-mem-leak-in-create_client.patch"
+	"${FILESDIR}/autofs-5.1.0-fix-memory-leak-in-get_exports.patch"
+	"${FILESDIR}/autofs-5.1.0-fix-memory-leak-in-get_defaults_entry.patch"
+	"${FILESDIR}/autofs-5.1.0-fix-out-of-order-clearing-of-options-buffer.patch"
+	"${FILESDIR}/autofs-5.1.0-fix-reset-amd-lexer-scan-buffer.patch"
+	"${FILESDIR}/autofs-5.1.0-ignore-multiple-commas-in-options-strings.patch"
+	"${FILESDIR}/autofs-5.1.0-fix-typo-in-flagdir-configure-option.patch"
+	"${FILESDIR}/autofs-5.1.0-clarify-multiple-mounts-description.patch"
+	"${FILESDIR}/autofs-5.1.0-gaurd-against-incorrect-umount-return.patch"
+	"${FILESDIR}/autofs-5.1.0-update-man-page-autofs-8-for-systemd.patch"
 )
-
 src_prepare() {
-	# Upstream's patchset
-	PATCHES="
-		autofs-5.1.0-fix-compile-error-in-defaults_c.patch
-		autofs-5.1.0-add-serialization-to-sasl-init.patch
-		autofs-5.1.0-dont-allocate-dev_ctl_ops-too-early.patch
-		autofs-5.1.0-fix-incorrect-round-robin-host-detection.patch
-		autofs-5.0.9-fix-race-accessing-qdn-in-get_query_dn.patch
-		autofs-5.1.0-fix-leak-in-cache_push_mapent.patch
-		autofs-5.1.0-fix-config-entry-read-buffer-not-checked.patch
-		autofs-5.1.0-fix-FILE-pointer-check-in-defaults_read_config.patch
-		autofs-5.1.0-fix-memory-leak-in-conf_amd_get_log_options.patch
-		autofs-5.1.0-fix-signed-comparison-in-inet_fill_net.patch
-		autofs-5.1.0-fix-buffer-size-checks-in-get_network_proximity.patch
-		autofs-5.1.0-fix-leak-in-get_network_proximity.patch
-		autofs-5.1.0-fix-buffer-size-checks-in-merge_options.patch
-		autofs-5.1.0-check-amd-lex-buffer-len-before-copy.patch
-		autofs-5.1.0-add-return-check-in-ldap-check_map_indirect.patch
-		autofs-5.1.0-check-host-macro-is-set-before-use.patch
-		autofs-5.1.0-check-options-length-before-use-in-parse_amd_c.patch
-		autofs-5.1.0-fix-some-out-of-order-evaluations-in-parse_amd_c.patch
-		autofs-5.1.0-fix-copy-and-paste-error-in-dup_defaults_entry.patch
-		autofs-5.1.0-fix-leak-in-parse_mount.patch
-		autofs-5.1.0-add-mutex-call-return-check-in-defaults_c.patch
-		autofs-5.1.0-force-disable-browse-mode-for-amd-format-maps.patch
-		autofs-5.1.0-fix-hosts-map-options-check-in-lookup_amd_instance.patch
-		autofs-5.1.0-fix-mem-leak-in-create_client.patch
-		autofs-5.1.0-fix-memory-leak-in-get_exports.patch
-		autofs-5.1.0-fix-memory-leak-in-get_defaults_entry.patch
-		autofs-5.1.0-fix-out-of-order-clearing-of-options-buffer.patch
-		autofs-5.1.0-fix-reset-amd-lexer-scan-buffer.patch
-		autofs-5.1.0-ignore-multiple-commas-in-options-strings.patch
-		autofs-5.1.0-fix-typo-in-flagdir-configure-option.patch
-		autofs-5.1.0-clarify-multiple-mounts-description.patch
-		autofs-5.1.0-gaurd-against-incorrect-umount-return.patch
-		autofs-5.1.0-update-man-page-autofs-8-for-systemd.patch
-"
-	for PATCH in $PATCHES ; do
-		epatch "${FILESDIR}/${PATCH}"
-	done
 	sed -i -e "s:/usr/bin/kill:/bin/kill:" samples/autofs.service.in || die #bug #479492
 	autotools-utils_src_prepare
 }
