@@ -84,7 +84,7 @@ src_prepare() {
 		autofs-5.1.0-update-man-page-autofs-8-for-systemd.patch
 "
 	for PATCH in $PATCHES ; do
-		epatch "${PATCH}"
+		epatch "${FILESDIR}/${PATCH}"
 	done
 	sed -i -e "s:/usr/bin/kill:/bin/kill:" samples/autofs.service.in || die #bug #479492
 	autotools-utils_src_prepare
