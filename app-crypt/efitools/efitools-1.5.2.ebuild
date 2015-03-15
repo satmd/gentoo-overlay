@@ -3,10 +3,13 @@
 # $Header: /var/cvsroot/gentoo-x86/app-crypt/efitools/efitools-1.4.2-r1.ebuild,v 1.3 2015/01/30 09:21:05 pinkbyte Exp $
 
 EAPI="4"
+inherit git-r3
 
 DESCRIPTION="Tools for manipulating UEFI secure boot platforms"
 HOMEPAGE="https://git.kernel.org/cgit/linux/kernel/git/jejb/efitools.git"
-SRC_URI="http://blog.hansenpartnership.com/wp-uploads/2013/efitools-${PV}.tar.gz"
+
+EGIT_REPO_URI="git://git.kernel.org/pub/scm/linux/kernel/git/jejb/efitools.git"
+EGIT_COMMIT="v1.5.2"
 
 LICENSE="GPL-2"
 SLOT="0"
