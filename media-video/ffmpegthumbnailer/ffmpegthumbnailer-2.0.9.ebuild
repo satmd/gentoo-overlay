@@ -25,6 +25,8 @@ REQUIRED_USE="gnome? ( gtk )"
 
 DOCS="AUTHORS ChangeLog README"
 
+S="${WORKDIR}/${PN}-${P}"
+
 src_prepare() {
 	epatch "${FILESDIR}"/${P}-memcpy.patch
 	elibtoolize
