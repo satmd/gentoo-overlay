@@ -3,7 +3,7 @@
 # $Header: /var/cvsroot/gentoo-x86/media-video/ffmpegthumbnailer/ffmpegthumbnailer-2.0.8.ebuild,v 1.9 2013/04/05 20:39:09 ssuominen Exp $
 
 EAPI=5
-inherit eutils libtool
+inherit eutils libtool autotools
 
 DESCRIPTION="Lightweight video thumbnailer that can be used by file managers"
 HOMEPAGE="http://code.google.com/p/ffmpegthumbnailer/"
@@ -29,7 +29,7 @@ S="${WORKDIR}/${PN}-${P}"
 
 src_prepare() {
 	cd "${S}"
-	elibtoolize
+	eautoreconf
 }
 
 src_configure() {
