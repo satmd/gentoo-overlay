@@ -28,6 +28,7 @@ DOCS="AUTHORS ChangeLog README"
 S="${WORKDIR}/${PN}-${P}"
 
 src_prepare() {
+	cd "${S}"
 	epatch "${FILESDIR}"/${P}-memcpy.patch
 	elibtoolize
 }
