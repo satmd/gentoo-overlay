@@ -8,7 +8,7 @@ inherit eutils
 
 DESCRIPTION="customizable and lightweight notification-daemon"
 HOMEPAGE="http://www.knopwob.org/dunst/"
-SRC_URI="https://github.com/knopwob/${P}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="mirror://github/knopwob/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="BSD"
 SLOT="0"
