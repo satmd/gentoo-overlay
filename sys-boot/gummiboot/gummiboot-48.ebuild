@@ -4,7 +4,7 @@
 
 EAPI=5
 
-inherit eutils linux-info
+inherit eutils linux-info autotools
 
 DESCRIPTION="Minimalistic UEFI bootloader"
 HOMEPAGE="http://freedesktop.org/wiki/Software/gummiboot/"
@@ -30,4 +30,5 @@ pkg_pretend() {
 
 src_prepare() {
 	epatch_user
+	eautoreconf
 }
