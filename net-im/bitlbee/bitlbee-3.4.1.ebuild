@@ -143,7 +143,7 @@ src_install() {
 	fowners bitlbee:bitlbee /var/lib/bitlbee
 
 	dodoc doc/{AUTHORS,CHANGES,CREDITS,FAQ,README}
-	dodoc doc/user-guide/user-guide.txt
+	test -f doc/user-guide/user-guide.txt  && dodoc doc/user-guide/user-guide.txt
 	dohtml doc/user-guide/*.html
 
 	if use skype ; then
