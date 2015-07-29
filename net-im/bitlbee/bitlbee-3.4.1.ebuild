@@ -144,7 +144,9 @@ src_install() {
 
 	dodoc doc/{AUTHORS,CHANGES,CREDITS,FAQ,README}
 	test -f doc/user-guide/user-guide.txt  && dodoc doc/user-guide/user-guide.txt
-	dohtml doc/user-guide/*.html
+	for FILE in doc/user-guide/*.html ; do
+		dohtml "${FILE}"
+	done
 
 	if use skype ; then
 		newdoc protocols/skype/NEWS NEWS-skype
