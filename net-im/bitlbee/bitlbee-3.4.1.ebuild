@@ -145,7 +145,7 @@ src_install() {
 	dodoc doc/{AUTHORS,CHANGES,CREDITS,FAQ,README}
 	test -f doc/user-guide/user-guide.txt  && dodoc doc/user-guide/user-guide.txt
 	for FILE in doc/user-guide/*.html ; do
-		dohtml "${FILE}"
+		test -f "${FILE}" && dohtml "${FILE}"
 	done
 
 	if use skype ; then
