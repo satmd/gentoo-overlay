@@ -12,10 +12,6 @@ KEYWORDS="~amd64 ~x86"
 RDEPEND="x11-wm/i3"
 DEPEND="${RDEPEND}"
 
-src_compile() {
-	cd "${S}"
-	emake PREFIX="${EPREFIX}"/usr
-}
 src_install() {
 	emake install PREFIX="${EPREFIX}"/usr
 }
