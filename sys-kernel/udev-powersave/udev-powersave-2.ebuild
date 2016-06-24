@@ -16,7 +16,6 @@ IUSE=""
 DEPEND="virtual/udev sys-apps/hdparm"
 RDEPEND="${DEPEND}"
 
-
 src_unpack() {
 	mkdir "${S}"
 }

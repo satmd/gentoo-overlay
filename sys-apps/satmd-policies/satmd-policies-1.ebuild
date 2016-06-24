@@ -16,7 +16,6 @@ IUSE=""
 DEPEND=""
 RDEPEND="${DEPEND}"
 
-
 src_unpack() {
 	mkdir "${S}"
 }

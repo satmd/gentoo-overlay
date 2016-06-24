@@ -14,7 +14,6 @@ KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 DEPEND="sys-boot/grub:2 sys-kernel/dracut virtual/linux-sources"
-RDEPEND="${DEPEND}"
 
 src_unpack() {
 	mkdir "${S}"
