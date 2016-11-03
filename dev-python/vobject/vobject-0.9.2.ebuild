@@ -1,4 +1,4 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
@@ -7,7 +7,7 @@ PYTHON_COMPAT=( python3_4 )
 
 inherit distutils-r1
 
-DESCRIPTION="A full featured Python package for parsing and generating vCard and vCalendar files"
+DESCRIPTION="A full featured Python package for parsing and generating vCard and vCal files"
 HOMEPAGE="https://eventable.github.io/vobject/ https://pypi.python.org/pypi/vobject"
 SRC_URI="http://github.com/eventable/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 

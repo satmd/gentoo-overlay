@@ -1,4 +1,4 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
@@ -15,12 +15,10 @@ LICENSE="BSD-2"
 
 inherit distutils-r1 eutils
 
-RDEPEND="dev-python/pyside
-	 dev-python/pycrypto
-	 dev-python/pyscard
-	 dev-python/pbkdf2"
-
-DEPEND="${RDEPEND}"
+RDEPEND="dev-python/pyside[${PYTHON_USEDEP}]
+	 dev-python/pycrypto[${PYTHON_USEDEP}]
+	 dev-python/pyscard[${PYTHON_USEDEP}]
+	 dev-python/pbkdf2[${PYTHON_USEDEP}]"
 
 src_install()
 {
