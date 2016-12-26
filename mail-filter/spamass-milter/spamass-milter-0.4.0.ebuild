@@ -25,10 +25,6 @@ pkg_setup() {
 	enewuser milter -1 -1 /var/lib/milter milter
 }
 
-src_prepare() {
-	epatch "${FILESDIR}"/${PN}-auth_users.patch
-}
-
 src_install() {
 	emake DESTDIR="${D}" install
 
