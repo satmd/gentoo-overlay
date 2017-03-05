@@ -1,11 +1,10 @@
 # Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
 
 EAPI=5
 
 DESCRIPTION="Simple powersave settings collection"
-HOMEPAGE="none"
+HOMEPAGE="https://github.com/satmd/gentoo-overlay"
 SRC_URI=""
 
 LICENSE="GPL-3"
