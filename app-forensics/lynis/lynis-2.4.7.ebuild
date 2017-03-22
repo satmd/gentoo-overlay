@@ -12,7 +12,7 @@ SRC_URI="http://cisofy.com/files/${P}.tar.gz"
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE=""
+IUSE="cron"
 
 DEPEND=""
 RDEPEND="app-shells/bash"
@@ -26,11 +26,13 @@ src_prepare() {
 
 src_install() {
 	doman lynis.8
-	dodoc CHANGELOG FAQ README
+	dodoc CHANGELOG.md FAQ README
 
 	# Remove the old one during the next stabilize progress
-	exeinto /etc/cron.daily
-	newexe "${FILESDIR}"/lynis.cron-new lynis
+	if use cron ; then
+		exeinto /etc/cron.daily
+		newexe "${FILESDIR}"/lynis.cron-new lynis
+	fi
 
 	dobashcomp extras/bash_completion.d/lynis
 
@@ -48,7 +50,9 @@ src_install() {
 }
 
 pkg_postinst() {
-	einfo
-	einfo "A cron script has been installed to ${ROOT}etc/cron.daily/lynis."
-	einfo
+	if use cron ; then
+		einfo
+		einfo "A cron script has been installed to ${ROOT}etc/cron.daily/lynis."
+		einfo
+	fi
 }
