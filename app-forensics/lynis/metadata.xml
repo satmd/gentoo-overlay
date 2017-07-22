@@ -5,4 +5,8 @@
 		<email>forensics@gentoo.org</email>
 		<name>Gentoo Forensics Project</name>
 	</maintainer>
+	<use>
+		<flag name="cron">Deploy crontab file to /etc/cron.d</flag>
+
+	</use>
 </pkgmetadata>
