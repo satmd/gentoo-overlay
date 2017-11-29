@@ -16,7 +16,7 @@ KEYWORDS="~amd64"
 IUSE=""
 
 DEPEND=""
-RDEPEND="=dev-python/vobject-0.9.2[${PYTHON_USEDEP}]
+RDEPEND=">=dev-python/vobject-0.9.2[${PYTHON_USEDEP}]
 	dev-python/pyyaml[${PYTHON_USEDEP}]
 	dev-python/configobj[${PYTHON_USEDEP}]
 	dev-python/vdirsyncer[${PYTHON_USEDEP}]"
