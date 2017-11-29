@@ -1,2 +1,0 @@
-SUBSYSTEM=="rfkill",ATTR{type}=="wlan",ACTION=="add|change",ATTR{state}=="0", ATTR{state}="1"
-SUBSYSTEM=="rfkill",ATTR{type}=="bluetooth",ACTION=="add",ATTR{state}="1"

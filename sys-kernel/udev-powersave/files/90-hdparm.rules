@@ -1,2 +1,0 @@
-KERNEL=="[shv]d[a-z]", SUBSYSTEM=="block", ACTION=="add|change", RUN+="udev-hdparm"
-KERNEL=="sr[0-9]*", SUBSYSTEM=="block", ACTION=="add|change", RUN+="udev-hdparm"

@@ -1,1 +1,0 @@
-KERNEL=="host[0-9]*", SUBSYSTEM=="scsi_host", ATTR{link_power_management_policy}="min_power"
