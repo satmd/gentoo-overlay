@@ -6,8 +6,8 @@ EAPI=6
 inherit eutils
 
 DESCRIPTION="The kernel install makefile and companions of satmd"
-HOMEPAGE="https://git.satmd.de/satmd/gentoo/dracut-module-askrescue"
-SRC_URI="https://git.satmd.de/satmd/gentoo/${PN}/snapshot/${P}.tar.gz"
+HOMEPAGE="https://git.satmd.de/satmd/linux/dracut-module-askrescue"
+SRC_URI="https://git.satmd.de/satmd/linux/${PN}/snapshot/${P}.tar.gz"
 
 LICENSE="GPL-3"
 SLOT="0"
