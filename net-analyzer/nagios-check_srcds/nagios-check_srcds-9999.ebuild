@@ -5,12 +5,10 @@ EAPI=5
 
 PYTHON_COMPAT=( python2_7 )
 
-inherit distutils-r1 git-2
+inherit distutils-r1
 
 DESCRIPTION="Check SRCDS servers using RCON"
-HOMEPAGE="https://github.com/Azelphur-Servers/nagios-srcds-check"
-EGIT_REPO_URI="https://github.com/Azelphur-Servers/nagios-srcds-check"
-EGIT_COMMIT="73796af42be1583e89f9624021a2f2bb7bdb89a8"
+HOMEPAGE="https://github.com/Azelphur-Servers/nagios-srcds-check - forked"
 
 LICENSE="as-is"
 SLOT="0"
