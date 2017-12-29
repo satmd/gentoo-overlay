@@ -20,11 +20,10 @@ IUSE=""
 DEPEND="dev-python/python-valve[${PYTHON_USEDEP}]"
 
 src_compile() {
-	sed -e 's,^from valve.source.rcon,from valve.rcon,' -i "${S}"/nagios-srcds-check.py
+	cp "${FILESDIR}/check_srcds-${PV}" "${S}/check_srcds"
 }
 
 src_install() {
-	mv nagios-srcds-check.py check_srcds
 	exeinto /usr/$(get_libdir)/nagios/plugins
 	doexe check_srcds
 }
