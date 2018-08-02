@@ -72,20 +72,20 @@ src_prepare() {
 		eautoreconf
 	fi
 
-	if ! use lm_sensors; then
-		sed -i "s#HAVE_LMSENSORS_H=1#HAVE_LMSENSORS_H=0#" configure
-	fi
-	if use networkmanager; then
-		sed -i "s#havelibnm\=no#havelibnm\=yes#" configure
-	else
-		sed -i "s#havelibnm\=yes#havelibnm\=no#" configure
-	fi
 	sed -i 's#-O3##' configure
 }
 
 src_configure() {
 	econf \
 		$(use_enable pcre)
+	if ! use lm_sensors; then
+		sed -i "s/#define HAVE_LMSENSORS_H 1/#undef HAVE_LMSENSORS_H/" config.h
+	fi
+	if use networkmanager; then
+		sed -i -e "s/.*#define HAVE_LIBNM.*/#define HAVE_LIBNM 1/" -e "s/.*#undef HAVE_LIBNM.*/#define HAVE_LIBNM 1/" config.h
+	else
+		sed -i -e "s/.*#define HAVE_LIBNM.*/#undef HAVE_LIBNM/" -e "s/.*#undef HAVE_LIBNM.*/#undef HAVE_LIBNM/" config.h
+	fi
 }
 
 src_install() {
