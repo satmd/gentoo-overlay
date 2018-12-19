@@ -17,9 +17,6 @@ IUSE=""
 S="${WORKDIR}"/gvm-tools-${PV}
 
 src_install() {
-	insinto /usr/$(get_libdir)/nagios/plugins/
-	doins nagios/*
-
 	dosbin openvas-check-setup
 
 	insinto /usr/share/vim/vimfiles/syntax
