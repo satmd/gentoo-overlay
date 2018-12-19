@@ -3,6 +3,8 @@
 
 EAPI=5
 
+PYTHON_COMPAT=( python3_3 python3_4 python3_5 python3_6)
+
 inherit multilib python-r1
 
 DESCRIPTION="A remote security scanner for Linux (extra tools)"
