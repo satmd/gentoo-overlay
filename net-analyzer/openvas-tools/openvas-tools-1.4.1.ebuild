@@ -3,7 +3,7 @@
 
 EAPI=5
 
-inherit multilib
+inherit multilib python-r1
 
 DESCRIPTION="A remote security scanner for Linux (extra tools)"
 HOMEPAGE="http://www.openvas.org/"
@@ -15,10 +15,3 @@ KEYWORDS="~amd64 ~x86 ~amd64-linux ~x86-linux"
 IUSE=""
 
 S="${WORKDIR}"/gvm-tools-${PV}
-
-src_install() {
-	dosbin openvas-check-setup
-
-	insinto /usr/share/vim/vimfiles/syntax
-	doins nasl.vim
-}
