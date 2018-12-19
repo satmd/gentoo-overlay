@@ -11,8 +11,7 @@ DL_ID=2287
 
 DESCRIPTION="Greenbone Security Assistant for openvas"
 HOMEPAGE="http://www.openvas.org/"
-SRC_URI="https://github.com/greenbone/gsa/releases/download/v${PV}/gsa-${PV}.tar.gz"
-
+SRC_URI="https://github.com/greenbone/gsa/archive/v${PV}.tar.gz -> gsa-${PV}.tar.gz"
 SLOT="0"
 LICENSE="GPL-2+ BSD MIT"
 KEYWORDS=" ~amd64 ~arm ~ppc ~x86"
