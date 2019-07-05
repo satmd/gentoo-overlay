@@ -15,7 +15,7 @@ diff -uNr grub-2.04~rc1/grub-core/term/ns8250.c grub-2.04~rc1.new/grub-core/term
 @@ -44,17 +44,28 @@
  #define DEFAULT_BASE_CLOCK 115200
  #endif
-
+ 
 +static inline unsigned char io_port_read (struct grub_serial_port *port, grub_addr_t reg)
 +{
 +  return grub_inb (port->port + reg);
@@ -27,7 +27,7 @@ diff -uNr grub-2.04~rc1/grub-core/term/ns8250.c grub-2.04~rc1.new/grub-core/term
 +}
 +
 +
-
+ 
  /* Convert speed to divisor.  */
 -static unsigned short
 -serial_get_divisor (const struct grub_serial_port *port __attribute__ ((unused)),
@@ -38,37 +38,37 @@ diff -uNr grub-2.04~rc1/grub-core/term/ns8250.c grub-2.04~rc1.new/grub-core/term
    grub_uint32_t base_clock;
    grub_uint32_t divisor;
    grub_uint32_t actual_speed, error;
-
+ 
 -  base_clock = config->base_clock ? (config->base_clock >> 4) : DEFAULT_BASE_CLOCK;
 +  base_clock = config->base_clock ? (config->base_clock >> 4) : port->board.base_baud;
-
+ 
    divisor = (base_clock + (config->speed / 2)) / config->speed;
    if (config->speed == 0)
 @@ -94,20 +105,21 @@
    divisor = serial_get_divisor (port, &port->config);
-
+ 
    /* Turn off the interrupt.  */
 -  grub_outb (0, port->port + UART_IER);
 +  port->driver->reg_write (port, 0, UART_IER);
-
+ 
    /* Set DLAB.  */
 -  grub_outb (UART_DLAB, port->port + UART_LCR);
 +  port->driver->reg_write (port, UART_DLAB, UART_LCR);
-
+ 
    /* Set the baud rate.  */
 -  grub_outb (divisor & 0xFF, port->port + UART_DLL);
 -  grub_outb (divisor >> 8, port->port + UART_DLH);
 +  port->driver->reg_write (port, divisor & 0xFF, UART_DLL);
 +  port->driver->reg_write (port, divisor >> 8, UART_DLH);
 +
-
+ 
    /* Set the line status.  */
    status |= (parities[port->config.parity]
  	     | (port->config.word_len - 5)
  	     | stop_bits[port->config.stop_bits]);
 -  grub_outb (status, port->port + UART_LCR);
 +  port->driver->reg_write (port, status, UART_LCR);
-
+ 
    if (port->config.rtscts)
      {
 @@ -120,17 +132,17 @@
@@ -77,12 +77,12 @@ diff -uNr grub-2.04~rc1/grub-core/term/ns8250.c grub-2.04~rc1.new/grub-core/term
        /* Enable the FIFO.  */
 -      grub_outb (UART_ENABLE_FIFO_TRIGGER14, port->port + UART_FCR);
 +      port->driver->reg_write (port, UART_ENABLE_FIFO_TRIGGER1, UART_FCR);
-
+ 
        /* Turn on DTR, RTS, and OUT2.  */
 -      grub_outb (UART_ENABLE_DTRRTS | UART_ENABLE_OUT2, port->port + UART_MCR);
 +      port->driver->reg_write (port, UART_ENABLE_DTRRTS, UART_MCR);
      }
-
+ 
    /* Drain the input buffer.  */
    endtime = grub_get_time_ms () + 1000;
 -  while (grub_inb (port->port + UART_LSR) & UART_DATA_READY)
@@ -95,7 +95,7 @@ diff -uNr grub-2.04~rc1/grub-core/term/ns8250.c grub-2.04~rc1.new/grub-core/term
  	  port->broken = 1;
 @@ -142,18 +154,18 @@
  }
-
+ 
  /* Fetch a key.  */
 -static int
 +int
@@ -106,10 +106,10 @@ diff -uNr grub-2.04~rc1/grub-core/term/ns8250.c grub-2.04~rc1.new/grub-core/term
 -    return grub_inb (port->port + UART_RX);
 +  if (port->driver->reg_read (port, UART_LSR) & UART_DATA_READY)
 +    return port->driver->reg_read (port, UART_RX);
-
+ 
    return -1;
  }
-
+ 
  /* Put a character.  */
 -static void
 +void
@@ -128,11 +128,11 @@ diff -uNr grub-2.04~rc1/grub-core/term/ns8250.c grub-2.04~rc1.new/grub-core/term
 @@ -180,7 +192,7 @@
    if (port->broken)
      port->broken--;
-
+ 
 -  grub_outb (c, port->port + UART_TX);
 +  port->driver->reg_write (port, c, UART_TX);
  }
-
+ 
  /* Initialize a serial device. PORT is the port number for a serial device.
 @@ -190,7 +202,7 @@
     STOP_BIT_LEN is the length of the stop bit. The possible values for
@@ -152,7 +152,7 @@ diff -uNr grub-2.04~rc1/grub-core/term/ns8250.c grub-2.04~rc1.new/grub-core/term
 +    .reg_read = io_port_read,
 +    .reg_write = io_port_write,
    };
-
+ 
  static char com_names[GRUB_SERIAL_PORT_NUM][20];
 @@ -260,6 +274,7 @@
  	com_ports[i].name = com_names[i];
@@ -167,8 +167,8 @@ diff -uNr grub-2.04~rc1/grub-core/term/ns8250.c grub-2.04~rc1.new/grub-core/term
    grub_serial_config_defaults (p);
    p->port = port;
 +  p->board.base_baud = DEFAULT_BASE_CLOCK;
-   grub_serial_register (p);
-
+   grub_serial_register (p);  
+ 
    return p->name;
 diff -uNr grub-2.04~rc1/grub-core/term/ns8250-pci-mmio.c grub-2.04~rc1.new/grub-core/term/ns8250-pci-mmio.c
 --- grub-2.04~rc1/grub-core/term/ns8250-pci-mmio.c	1970-01-01 01:00:00.000000000 +0100
@@ -279,7 +279,7 @@ diff -uNr grub-2.04~rc1/grub-core/term/ns8250-pci-mmio.c grub-2.04~rc1.new/grub-
 +  vendor = pciid & 0xffff;
 +  device = pciid >> 16;
 +
-+  if (vendor == 0x1415 && device == 0xc138)
++  if (vendor == 0x1415 && device == 0xc158)
 +    {
 +      struct grub_serial_port *port = &ports[d->num_ports];
 +      struct grub_serial_board *b = &ports[d->num_ports].board;
@@ -290,7 +290,7 @@ diff -uNr grub-2.04~rc1/grub-core/term/ns8250-pci-mmio.c grub-2.04~rc1.new/grub-
 +      read_bars(dev, b);
 +
 +      // this card has two serial ports
-+      port->board.num_ports = 1;
++      port->board.num_ports = 2;
 +      port->board.base_baud = 4000000;
 +      port->board.port_offset = 0x200;
 +      port->board.base_offset = 0x1000;
@@ -364,7 +364,7 @@ diff -uNr grub-2.04~rc1/grub-core/term/serial.c grub-2.04~rc1.new/grub-core/term
 --- grub-2.04~rc1/grub-core/term/serial.c	2017-02-21 20:50:38.000000000 +0100
 +++ grub-2.04~rc1.new/grub-core/term/serial.c	2019-07-04 17:15:26.360482158 +0200
 @@ -194,8 +194,12 @@
-
+ 
    if (state[OPTION_UNIT].set)
      {
 -      grub_snprintf (pname, sizeof (pname), "com%ld",
@@ -377,9 +377,9 @@ diff -uNr grub-2.04~rc1/grub-core/term/serial.c grub-2.04~rc1.new/grub-core/term
 +
        name = pname;
      }
-
+ 
 @@ -438,6 +442,7 @@
-
+ 
  #if !defined (GRUB_MACHINE_EMU) && !defined(GRUB_MACHINE_ARC) && (defined(__mips__) || defined (__i386__) || defined (__x86_64__))
    grub_ns8250_init ();
 +  grub_ns8250_pci_mmio_init ();
@@ -392,14 +392,14 @@ diff -uNr grub-2.04~rc1/include/grub/ns8250.h grub-2.04~rc1.new/include/grub/ns8
 @@ -20,6 +20,8 @@
  #ifndef GRUB_NS8250_HEADER
  #define GRUB_NS8250_HEADER	1
-
+ 
 +#include <grub/serial.h>
 +
  /* Macros.  */
-
+ 
  /* The offsets of UART registers.  */
 @@ -75,6 +77,52 @@
-
+ 
  grub_port_t
  grub_ns8250_hw_get_port (const unsigned int unit);
 +
@@ -449,15 +449,15 @@ diff -uNr grub-2.04~rc1/include/grub/ns8250.h grub-2.04~rc1.new/include/grub/ns8
 +serial_hw_fetch (struct grub_serial_port *port);
 +
  #endif
-
+ 
  #endif /* ! GRUB_SERIAL_MACHINE_HEADER */
 diff -uNr grub-2.04~rc1/include/grub/pci.h grub-2.04~rc1.new/include/grub/pci.h
 --- grub-2.04~rc1/include/grub/pci.h	2017-07-08 10:31:21.000000000 +0200
 +++ grub-2.04~rc1.new/include/grub/pci.h	2019-07-04 17:15:26.361482186 +0200
 @@ -102,6 +102,14 @@
-
+ 
  typedef grub_uint32_t grub_pci_id_t;
-
+ 
 +enum { NO_BAR, IO_BAR, MEM_BAR };
 +struct grub_pci_resource
 +{
@@ -489,11 +489,11 @@ diff -uNr grub-2.04~rc1/include/grub/serial.h grub-2.04~rc1.new/include/grub/ser
 +  unsigned char (*reg_read) (struct grub_serial_port *port, grub_addr_t reg);
    void (*fini) (struct grub_serial_port *port);
  };
-
+ 
 @@ -71,6 +75,17 @@
    int rtscts;
  };
-
+ 
 +enum { NUM_BARS = 6 };
 +struct grub_serial_board
 +{
@@ -513,7 +513,7 @@ diff -uNr grub-2.04~rc1/include/grub/serial.h grub-2.04~rc1.new/include/grub/ser
    int configured;
    int broken;
 +  struct grub_serial_board board;
-
+ 
    /* This should be void *data but since serial is useful as an early console
       when malloc isn't available it's a union.
 @@ -91,6 +107,13 @@
@@ -531,7 +531,7 @@ diff -uNr grub-2.04~rc1/include/grub/serial.h grub-2.04~rc1.new/include/grub/ser
        int configno;
        int interfno;
 @@ -177,6 +200,7 @@
-
+ 
  #if defined(__mips__) || defined (__i386__) || defined (__x86_64__)
  void grub_ns8250_init (void);
 +void grub_ns8250_pci_mmio_init (void);
@@ -539,10 +539,10 @@ diff -uNr grub-2.04~rc1/include/grub/serial.h grub-2.04~rc1.new/include/grub/ser
  #endif
  #ifdef GRUB_MACHINE_IEEE1275
 @@ -195,6 +219,7 @@
-
+ 
  struct grub_serial_port *grub_serial_find (const char *name);
  extern struct grub_serial_driver grub_ns8250_driver;
 +extern struct grub_serial_driver grub_ns8250_pci_mmio_driver;
  void EXPORT_FUNC(grub_serial_unregister_driver) (struct grub_serial_driver *driver);
-
+ 
  #ifndef GRUB_MACHINE_EMU
