@@ -279,7 +279,7 @@ diff -uNr grub-2.04~rc1/grub-core/term/ns8250-pci-mmio.c grub-2.04~rc1.new/grub-
 +  vendor = pciid & 0xffff;
 +  device = pciid >> 16;
 +
-+  if (vendor == 0x1415 && device == 0xc158)
++  if (vendor == 0x1415 && (device == 0xc138 || device == 0xc158))
 +    {
 +      struct grub_serial_port *port = &ports[d->num_ports];
 +      struct grub_serial_board *b = &ports[d->num_ports].board;
