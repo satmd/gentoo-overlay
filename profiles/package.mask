@@ -1,3 +1,0 @@
-# hide old stuff
-<=cross-i686-pc-mingw32/gcc-4.0
-<=cross-x86_64-w64-mingw32/gcc-4.0
